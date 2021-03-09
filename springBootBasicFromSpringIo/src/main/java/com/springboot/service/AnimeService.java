@@ -42,4 +42,10 @@ public class AnimeService {
 		
 	}
 
+	public void replace(Anime anime) {
+		delete(anime.getId());
+		animes.add(anime);
+		
+	}
+
 }
