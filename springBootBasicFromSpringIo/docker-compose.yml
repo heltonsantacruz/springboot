@@ -8,8 +8,8 @@ services:
     ports: 
     - "3306:3306"
     volumes:
-    - devspringboot_data:/var/lib/mysql
+    - basic_springboot_data:/var/lib/mysql
 
 volumes:
-  devspringboot_data:
+  basic_springboot_data:
     
