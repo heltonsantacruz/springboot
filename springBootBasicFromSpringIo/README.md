@@ -18,3 +18,7 @@
 **Postman**
 
 **Docker**
+
+
+Could not get the value for parameter annotationProcessorPaths for plugin execution default-compile
+Cannot find 'lombok.version' in class org.apache.maven.model.Dependency

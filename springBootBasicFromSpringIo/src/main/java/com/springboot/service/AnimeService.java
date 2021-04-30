@@ -2,6 +2,10 @@ package com.springboot.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.springboot.domain.Anime;
@@ -25,9 +29,22 @@ public class AnimeService {
 //		animes = new ArrayList<>(List.of(new Anime(1L, "DB2"), new Anime(2L, "Berserk  uiuiui")));
 //	}
 	
-	public List<Anime> listAll(){
+	/* Without pages*/
+//	public List<Anime> listAll(){
+//		return animeRepository.findAll();
+//	}
+	
+	
+	/* With pages*/
+	public Page<Anime> listAll(Pageable pageable){
+		return animeRepository.findAll(pageable);
+	}
+
+	
+	public List<Anime> listAllNonPageable() {
 		return animeRepository.findAll();
 	}
+
 	
 	public List<Anime> findByName(String name){
 		return animeRepository.findByName(name);
@@ -43,6 +60,9 @@ public class AnimeService {
 				.orElseThrow(() -> new BadRequestException("Anime not found"));
 	}
 
+	//The spring will commit nothing while the method don't finish ou if trhow any exception
+	//Transaction by default doesn't consider checked exception. To work this it is necessary put the parameter @Transactional(rollbackOn = Exception.class) 
+	@Transactional
 	public Anime save(AnimePostRequestBody animePostRequestBody) {
 		//return animeRepository.save(Anime.builder().name(animePostRequestBody.getName()).build());
 		return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
@@ -56,13 +76,14 @@ public class AnimeService {
 	public void replace(AnimePutRequestBody animePutRequestBody) {
 		Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
 		Anime anime = animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePutRequestBody));
-		anime.setId(savedAnime.getId());
+//		anime.setId(savedAnime.getId());
 //		Anime anime = Anime.builder()
 //				.id(savedAnime.getId())
 //				.name(animePutRequestBody.getName())
 //				.build();
-		animeRepository.save(anime);
+//		animeRepository.save(anime);
 		
 	}
+
 
 }
